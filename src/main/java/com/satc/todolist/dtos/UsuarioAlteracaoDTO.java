@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UsuarioAlteracaoDTO(
-    @NotNull(message = "O nome do usuário não pode ser nulo") String nome,
-    @NotNull(message = "O email do usuário não pode ser nulo") @Email(message = "O email do usuário deve ser válido") String email,
-    @Size(min = 8, max = 20, message = "A senha deve ter entre 8 e 20 caracteres") String senha) {
+    @NotNull(message = "O nome do usuário não pode ser nulo") @Size(min = 1, max = 100, message = "O nome do usuário deve ter entre {min} e {max} caracteres") String nome,
+    @NotNull(message = "O email do usuário não pode ser nulo") @Email(message = "O email do usuário deve ser válido") @Size(min = 1, max = 100, message = "O email do usuário deve ter entre {min} e {max} caracteres") String email,
+    @Size(min = 8, max = 20, message = "A senha deve ter entre {min} e {max} caracteres") String senha) {
 }
