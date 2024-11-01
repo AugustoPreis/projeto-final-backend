@@ -1,7 +1,6 @@
 package com.satc.todolist.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -36,13 +35,13 @@ public class UsuarioService {
       throw new RequestError(HttpStatus.BAD_REQUEST, "ID não informado.");
     }
 
-    final Optional<UsuarioModel> usuarioModel = usuarioRepository.findById(id);
+    final UsuarioModel usuarioModel = usuarioRepository.findOneById(id);
 
-    if (usuarioModel.isEmpty()) {
+    if (usuarioModel == null) {
       throw new RequestError(HttpStatus.NOT_FOUND, "Usuário não encontrado.");
     }
 
-    return usuarioMapper.toDetalhesDTO(usuarioModel.get());
+    return usuarioMapper.toDetalhesDTO(usuarioModel);
   }
 
   public UsuarioRespostaDTO criaUsuario(UsuarioCadastroDTO usuarioCadastroDTO) {
