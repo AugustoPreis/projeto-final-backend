@@ -15,4 +15,6 @@ public interface NotaRepository extends JpaRepository<NotaModel, Long> {
   List<NotaModel> findAllByUsuarioId(Long usuarioId, Sort ordem);
 
   NotaModel findOneByIdAndUsuarioId(Long id, Long usuarioId);
+
+  int countByUsuarioId(Long usuarioId);
 }

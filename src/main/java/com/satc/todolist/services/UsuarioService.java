@@ -13,6 +13,7 @@ import com.satc.todolist.dtos.UsuarioCadastroDTO;
 import com.satc.todolist.dtos.UsuarioRespostaDTO;
 import com.satc.todolist.mappers.UsuarioMapper;
 import com.satc.todolist.models.UsuarioModel;
+import com.satc.todolist.repositories.NotaRepository;
 import com.satc.todolist.repositories.UsuarioRepository;
 import com.satc.todolist.utils.RequestError;
 
@@ -23,6 +24,9 @@ public class UsuarioService {
 
   @Autowired
   UsuarioRepository usuarioRepository;
+
+  @Autowired
+  NotaRepository notaRepository;
 
   public List<UsuarioRespostaDTO> listaUsuarios() {
     final List<UsuarioModel> usuarioModels = usuarioRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
@@ -85,6 +89,11 @@ public class UsuarioService {
 
   public UsuarioDetalhesDTO deletaUsuario(Long id) {
     UsuarioDetalhesDTO usuarioDetalhesDTO = this.buscaUsuario(id);
+    int qtdNotasUsuario = notaRepository.countByUsuarioId(id);
+
+    if (qtdNotasUsuario > 0) {
+      throw new RequestError(HttpStatus.CONFLICT, "O usuário possui " + qtdNotasUsuario + " nota(s) vinculadas.");
+    }
 
     usuarioRepository.deleteById(id);
 
