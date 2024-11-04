@@ -1,0 +1,456 @@
+openapi: 3.0.0
+info:
+  title: TODO List
+  version: 1.0.0
+  description: TODO List com cadastro de notas, categorias e usuários
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /usuarios:
+    get:
+      tags:
+        - Usuários
+      summary: Listar Usuários
+      description: Retorna uma lista de usuários em ordem alfabética.
+      responses:
+        "200":
+          description: Lista de usuários retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nome:
+                      type: string
+                    email:
+                      type: string
+
+    post:
+      tags:
+        - Usuários
+      summary: Criar Usuário
+      description: Cadastrar um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                email:
+                  type: string
+                senha:
+                  type: string
+      responses:
+        "201":
+          description: Usuário criado com sucesso.
+        "400":
+          description: Parâmetro inválido.
+        "409":
+          description: Já existe um usuário com este email.
+
+  /usuarios/{id}:
+    get:
+      tags:
+        - Usuários
+      summary: Buscar Usuário pelo ID
+      description: Retorna o usuário correspondente ao ID informado.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do usuário.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuário encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nome:
+                    type: string
+                  email:
+                    type: string
+        "400":
+          description: ID não informado.
+        "404":
+          description: Usuário não encontrado.
+
+    put:
+      tags:
+        - Usuários
+      summary: Atualiza Usuário pelo ID
+      description: Atualiza as informações do usuário correspondente ao ID informado.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do usuário.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                email:
+                  type: string
+                senha:
+                  type: string
+      responses:
+        "200":
+          description: Usuário atualizado com sucesso.
+        "400":
+          description: Parâmetro inválido.
+        "404":
+          description: Usuário não encontrado.
+        "409":
+          description: Já existe um usuário com este email.
+
+    delete:
+      tags:
+        - Usuários
+      summary: Deleta Usuário pelo ID
+      description: Deleta o usuário correspondente ao ID informado.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do usuário.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuário deletado com sucesso.
+        "400":
+          description: ID não informado.
+        "404":
+          description: Usuário não encontrado.
+        "409":
+          description: O usuário possui notas vinculadas.
+
+  /categorias-nota:
+    get:
+      tags:
+        - Categorias de Nota
+      summary: Listar Categorias de Nota
+      description: Retorna uma lista de categorias de nota em ordem alfabética.
+      responses:
+        "200":
+          description: Lista de categorias de nota retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    descricao:
+                      type: string
+
+    post:
+      tags:
+        - Categorias de Nota
+      summary: Criar Categoria de Nota
+      description: Cadastrar uma nova Categoria de Nota.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                descricao:
+                  type: string
+      responses:
+        "201":
+          description: Categoria de nota criada com sucesso.
+        "400":
+          description: Parâmetro inválido.
+
+  /categorias-nota/{id}:
+    get:
+      tags:
+        - Categorias de Nota
+      summary: Buscar Categoria de Nota pelo ID
+      description: Retorna a categoria de nota correspondente ao ID informado.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da categoria de nota a ser retornada.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Categoria de nota encontrada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  descricao:
+                    type: string
+        "400":
+          description: ID não informado.
+        "404":
+          description: Categoria de nota não encontrada.
+
+    put:
+      tags:
+        - Categorias de Nota
+      summary: Atualiza Categoria de Nota pelo ID
+      description: Atualiza as informações da Categoria de Nota correspondente ao ID informado.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da categoria de nota a ser atualizada.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                descricao:
+                  type: string
+      responses:
+        "200":
+          description: Categoria de nota atualizada com sucesso.
+        "400":
+          description: Parâmetro inválido.
+        "404":
+          description: Categoria de nota não encontrada.
+
+    delete:
+      tags:
+        - Categorias de Nota
+      summary: Deletar Categoria de Nota pelo ID
+      description: Deleta a Categoria de Nota correspondente ao ID informado.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da categoria de nota a ser deletada.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Categoria de nota deletada com sucesso.
+        "400":
+          description: ID não informado.
+        "404":
+          description: Categoria de nota não encontrada.
+
+  /usuarios/{usuarioId}/notas:
+    get:
+      tags:
+        - Notas
+      summary: Listar Notas
+      description: Retorna uma lista de notas do usuário em ordem alfabética (título).
+      parameters:
+        - name: usuarioId
+          in: path
+          required: true
+          description: ID do usuário a quem as notas pertencem.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Lista de notas retornada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    titulo:
+                      type: string
+                    descricao:
+                      type: string
+                    usuario:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        nome:
+                          type: string
+                    categoria:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        descricao:
+                          type: string
+
+        "400":
+          description: ID do usuário não informado.
+        "404":
+          description: Usuário não encontrado.
+
+    post:
+      tags:
+        - Notas
+      summary: Criar Nota
+      description: Cadastrar uma nova Nota.
+      parameters:
+        - name: usuarioId
+          in: path
+          required: true
+          description: ID do usuário a quem a nota pertence.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoriaNotaId:
+                  type: integer
+                titulo:
+                  type: string
+                descricao:
+                  type: string
+      responses:
+        "201":
+          description: Nota criada com sucesso.
+        "400":
+          description: Parâmetro inválido.
+        "404":
+          description: Usuário ou categoria de nota não encontrado.
+
+  /usuarios/{usuarioId}/notas/{id}:
+    get:
+      tags:
+        - Notas
+      summary: Buscar Nota pelo ID
+      description: Retorna a nota correspondente ao ID informado.
+      parameters:
+        - name: usuarioId
+          in: path
+          required: true
+          description: ID do usuário a quem a nota pertence.
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: ID da nota a ser retornada.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Nota encontrada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  titulo:
+                    type: string
+                  descricao:
+                    type: string
+                  usuario:
+                    type: object
+                    properties:
+                      nome:
+                        type: string
+                      email:
+                        type: string
+                  categoria:
+                    type: object
+                    properties:
+                      descricao:
+                        type: string
+        "400":
+          description: ID não informado.
+        "404":
+          description: Nota não encontrada.
+
+    put:
+      tags:
+        - Notas
+      summary: Atualiza Nota pelo ID
+      description: Atualiza as informações da Nota correspondente ao ID informado.
+      parameters:
+        - name: usuarioId
+          in: path
+          required: true
+          description: ID do usuário a quem a nota pertence.
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: ID da nota a ser atualizada.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                titulo:
+                  type: string
+                descricao:
+                  type: string
+      responses:
+        "200":
+          description: Nota atualizada com sucesso.
+        "400":
+          description: Parâmetro inválido.
+        "404":
+          description: Nota não encontrada.
+
+    delete:
+      tags:
+        - Notas
+      summary: Deleta Nota pelo ID
+      description: Deleta a nota correspondente ao ID informado.
+      parameters:
+        - name: usuarioId
+          in: path
+          required: true
+          description: ID do usuário a quem a nota pertence.
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          description: ID da nota a ser deletada.
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Nota deletada com sucesso.
+        "400":
+          description: ID não informado.
+        "404":
+          description: Nota não encontrada.
