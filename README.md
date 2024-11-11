@@ -1,6 +1,9 @@
 # TODO List
 Lista de Tarefas criada em Java
 
+### Colaboradores
+  - Augusto Preis Tomasi
+
 ### Rodando o projeto
 - Instale a versão mais recente do `Docker`
 - Na pasta raiz do projeto, execute o comando `docker compose up --build`
