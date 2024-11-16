@@ -3,7 +3,8 @@ package com.satc.todolist.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +35,10 @@ public class NotaService {
   @Autowired
   UsuarioRepository usuarioRepository;
 
-  public List<NotaRespostaDTO> listaNotas(Long usuarioId) {
-    List<NotaModel> notasModel = notaRepository.findAllByUsuarioId(usuarioId,
-        Sort.by(Sort.Direction.ASC, "titulo"));
+  public Page<NotaRespostaDTO> listaNotas(Long usuarioId,Pageable pageable) {
+    Page<NotaModel> notasModel = notaRepository.findAllByUsuarioId(usuarioId,pageable);
 
-    return notasModel.stream().map(notaMapper::toNotaRespostaDTO).toList();
+    return notasModel.map(notaMapper::toNotaRespostaDTO);
   }
 
   public NotaDetalhesDTO buscaNota(Long usuarioId, Long id) {

@@ -6,7 +6,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: todolist
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/todolist
-      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_USERNAME: postgre
       SPRING_DATASOURCE_PASSWORD: admin
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
@@ -18,7 +18,7 @@ services:
     container_name: todolist-db
     environment:
       POSTGRES_DB: todolist
-      POSTGRES_USER: postgres
+      POSTGRES_USER: postgre
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"

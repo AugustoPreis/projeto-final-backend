@@ -1,9 +1,8 @@
 package com.satc.todolist.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +22,10 @@ public class CategoriaNotaService {
   @Autowired
   CategoriaNotaRepository categoriaNotaRepository;
 
-  public List<CategoriaNotaRespostaDTO> listaCategoriasNota() {
-    List<CategoriaNotaModel> categoriasNotaModel = categoriaNotaRepository.findAll(Sort.by(Sort.Direction.ASC, "descricao"));
+  public Page<CategoriaNotaRespostaDTO> listaCategoriasNota(Pageable pageable) {
+    Page<CategoriaNotaModel> categoriasNotaModel = categoriaNotaRepository.findAll(pageable);
 
-    return categoriasNotaModel.stream().map(categoriaNotaMapper::toCategoriaNotaRespostaDTO).toList();
+    return categoriasNotaModel.map(categoriaNotaMapper::toCategoriaNotaRespostaDTO);
   }
 
   public CategoriaNotaDetalhesDTO buscaCategoriaNota(Long id) {

@@ -1,15 +1,14 @@
 package com.satc.todolist.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.satc.todolist.dtos.UsuarioDetalhesDTO;
 import com.satc.todolist.dtos.UsuarioAlteracaoDTO;
 import com.satc.todolist.dtos.UsuarioCadastroDTO;
+import com.satc.todolist.dtos.UsuarioDetalhesDTO;
 import com.satc.todolist.dtos.UsuarioRespostaDTO;
 import com.satc.todolist.mappers.UsuarioMapper;
 import com.satc.todolist.models.UsuarioModel;
@@ -28,10 +27,10 @@ public class UsuarioService {
   @Autowired
   NotaRepository notaRepository;
 
-  public List<UsuarioRespostaDTO> listaUsuarios() {
-    final List<UsuarioModel> usuarioModels = usuarioRepository.findAll(Sort.by(Sort.Direction.ASC, "nome"));
+  public Page<UsuarioRespostaDTO> listaUsuarios(Pageable pageable) {
+    final Page<UsuarioModel> usuarioModels = usuarioRepository.findAll(pageable);
 
-    return usuarioModels.stream().map(usuarioMapper::toUsuarioRespostaDTO).toList();
+    return usuarioModels.map(usuarioMapper::toUsuarioRespostaDTO);
   }
 
   public UsuarioDetalhesDTO buscaUsuario(Long id) {

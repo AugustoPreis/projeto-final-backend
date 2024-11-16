@@ -1,5 +1,9 @@
 package com.satc.todolist.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,14 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-
 import com.satc.todolist.dtos.UsuarioAlteracaoDTO;
-import com.satc.todolist.dtos.UsuarioDetalhesDTO;
 import com.satc.todolist.dtos.UsuarioCadastroDTO;
+import com.satc.todolist.dtos.UsuarioDetalhesDTO;
 import com.satc.todolist.dtos.UsuarioRespostaDTO;
 import com.satc.todolist.services.UsuarioService;
 
@@ -33,8 +32,8 @@ public class UsuarioController extends DefaultController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public List<UsuarioRespostaDTO> listaUsuarios() {
-    return usuarioService.listaUsuarios();
+  public Page<UsuarioRespostaDTO> listaUsuarios(Pageable pageable) {
+    return usuarioService.listaUsuarios(pageable);
   }
 
   @GetMapping("/{id}")
